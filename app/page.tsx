@@ -6,7 +6,7 @@ export const revalidate = 0
 
 export default async function Page() {
   let config: Config | null = null;
-  
+
   try {
     config = await redis.get<Config>('grim_config')
   } catch (e) {
@@ -16,7 +16,7 @@ export default async function Page() {
   // Fallback se il database è appena stato creato ed è vuoto
   if (!config) {
     config = {
-      artistName: 'Laki',
+      artistName: 'grim',
       songTitle: 'PEZZI PEZZOTTI',
       metaPixelId: '',
       coverImageUrl: '/laki-cover.png',
