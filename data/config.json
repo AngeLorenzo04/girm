@@ -1,0 +1,46 @@
+{
+  "artistName": "Laki",
+  "songTitle": "PEZZI PEZZOTTI",
+  "metaPixelId": "123456789098765",
+  "coverImageUrl": "/laki-cover.png",
+  "theme": {
+    "backgroundColor": "#0b0f19",
+    "accentColor": "#8b5cf6",
+    "buttonTextColor": "#ffffff",
+    "buttonIconColor": "#ffffff"
+  },
+  "buttons": [
+    {
+      "id": "spotify",
+      "label": "Listen on Spotify",
+      "url": "spotify:track:3erbWkR71miSOv8LfABFZF",
+      "icon": "Twitter",
+      "color": "#1DB954",
+      "isPrimary": true
+    },
+    {
+      "id": "apple",
+      "label": "Apple Music",
+      "url": "pornhub.",
+      "icon": "Apple",
+      "color": "#FA243C",
+      "isPrimary": false
+    },
+    {
+      "id": "youtube",
+      "label": "Watch on YouTube",
+      "url": "niger.com",
+      "icon": "Youtube",
+      "color": "#FF0000",
+      "isPrimary": false
+    },
+    {
+      "id": "instagram",
+      "label": "Follow on Instagram",
+      "url": "https://www.italia.it/it",
+      "icon": "Link",
+      "color": "#E1306C",
+      "isPrimary": false
+    }
+  ]
+}
