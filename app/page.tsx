@@ -16,7 +16,7 @@ export default async function Page() {
   // Fallback se il database è appena stato creato ed è vuoto
   if (!config) {
     config = {
-      artistName: 'grim',
+      artistName: 'GRIM',
       songTitle: 'PEZZI PEZZOTTI',
       metaPixelId: '',
       coverImageUrl: '/laki-cover.png',
