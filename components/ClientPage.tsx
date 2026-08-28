@@ -183,19 +183,19 @@ export default function ClientPage({ config }: { config: Config }) {
           <div className="flex min-h-full w-full flex-col items-center justify-start">
             <div className="relative mx-auto flex w-full max-w-md flex-col my-auto px-6 pb-24 pt-12">
             <header className="flex items-center justify-center">
-              <span className="font-sans text-xl font-medium tracking-[0.32em] text-white [text-shadow:0_0_15px_rgba(255,255,255,1),0_0_30px_rgba(255,255,255,0.8),0_0_50px_rgba(255,255,255,0.5)]">GRIM UNIVERSE</span>
+              <span className="text-xl font-extralight tracking-[0.35em] text-white [text-shadow:0_0_20px_rgba(255,255,255,0.6),0_0_40px_rgba(255,255,255,0.4)]">GRIM UNIVERSE</span>
             </header>
 
             <section className="flex flex-1 flex-col items-center justify-center py-12" aria-labelledby="release-title">
               <div className="relative">
-                <div className="absolute -inset-5 rounded-2xl bg-violet-500/20 blur-2xl" />
-                <img src={config.coverImageUrl} alt={`${config.artistName} — ${config.songTitle} cover art`} className="relative aspect-square w-64 rounded-xl object-cover shadow-[0_0_55px_rgba(139,92,246,0.42)] ring-1 ring-white/15 sm:w-72" />
+                <div className="absolute -inset-5 rounded-2xl bg-violet-500/10 blur-3xl" />
+                <img src={config.coverImageUrl} alt={`${config.artistName} — ${config.songTitle} cover art`} className="relative aspect-square w-64 rounded-xl object-cover shadow-[0_0_60px_rgba(139,92,246,0.3)] ring-1 ring-white/10 sm:w-72" />
               </div>
 
-              <div className="mt-7 text-center">
-                <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-white/80">New release</p>
-                <h1 id="release-title" className="font-sans text-4xl font-bold tracking-[0.1em] text-white [text-shadow:0_0_12px_rgba(255,255,255,0.9),0_0_25px_rgba(255,255,255,0.5)]">{config.songTitle}</h1>
-                <p className="mt-2 text-lg font-bold tracking-[0.15em] text-white/90 [text-shadow:0_0_8px_rgba(255,255,255,0.6)]">{config.artistName}</p>
+              <div className="mt-8 text-center">
+                <p className="mb-4 text-xs font-light uppercase tracking-[0.3em] text-white/70">New release</p>
+                <h1 id="release-title" className="text-4xl font-medium tracking-[0.15em] text-white [text-shadow:0_0_15px_rgba(255,255,255,0.8),0_0_30px_rgba(255,255,255,0.3)]">{config.songTitle}</h1>
+                <p className="mt-3 text-lg font-light tracking-[0.2em] text-white/80 [text-shadow:0_0_10px_rgba(255,255,255,0.4)]">{config.artistName}</p>
               </div>
 
               <div className="mt-9 flex w-full flex-col gap-5">
@@ -230,7 +230,7 @@ export default function ClientPage({ config }: { config: Config }) {
                           style={{ color: btn.color }}
                         />
                         <span
-                          className="font-sans text-[14px] font-bold tracking-[0.2em] uppercase drop-shadow-[0_0_8px_rgba(255,255,255,0.7)] text-white"
+                          className="text-[13px] font-medium tracking-[0.25em] uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/90"
                         >
                           {btn.label}
                         </span>
@@ -246,7 +246,7 @@ export default function ClientPage({ config }: { config: Config }) {
               </div>
             </section>
 
-            <footer className="mt-16 pb-12 text-center font-mono text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground/70">Press play. Enter the void.</footer>
+            <footer className="mt-16 pb-12 text-center text-xs font-light uppercase tracking-[0.3em] text-muted-foreground/60">Press play. Enter the void.</footer>
             </div>
           </div>
         </motion.main>
@@ -256,7 +256,7 @@ export default function ClientPage({ config }: { config: Config }) {
           className="pointer-events-none absolute bottom-8 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center gap-3 text-white/90"
           style={{ opacity: scrollIndicatorOpacity, display: scrollIndicatorDisplay as any }}
         >
-          <span className="font-mono text-xs font-semibold uppercase tracking-[0.3em] text-center max-w-[250px] drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">Scorri per entrare nel mio universo</span>
+          <span className="text-[10px] font-medium uppercase tracking-[0.35em] text-center max-w-[250px] drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/80">Scorri per entrare nel mio universo</span>
           <motion.div
             animate={{ y: [0, 8, 0], opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}

@@ -1,6 +1,13 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Montserrat } from 'next/font/google'
 import './globals.css'
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-montserrat',
+})
 
 export const metadata: Metadata = {
   title: 'GRIM — NOME SINGOLO',
@@ -37,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className="antialiased">
+    <html lang="en" className={`${montserrat.variable} bg-background`}>
+      <body className="font-montserrat antialiased overflow-x-hidden max-w-[100vw]">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
