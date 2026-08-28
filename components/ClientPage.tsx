@@ -232,7 +232,7 @@ export default function ClientPage({ config }: { config: Config }) {
                           style={{ color: btn.color }}
                         />
                         <span
-                          className="text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/90 truncate max-w-[200px]"
+                          className="text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/90"
                         >
                           {btn.label}
                         </span>
