@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Camera, Headphones, Music2, Play, Link as LinkIcon, Video, MessageSquare, Music, Globe, ChevronDown } from 'lucide-react'
 
 export type CustomButton = {
@@ -74,22 +74,6 @@ const comets = [
 ];
 
 export default function ClientPage({ config }: { config: Config }) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  })
-
-  const boyY = useTransform(scrollYProgress, [0, 0.8], ['-20vh', '120vh'])
-  const boyScale = useTransform(scrollYProgress, [0.4, 0.8], [1, 0])
-  const boyOpacity = useTransform(scrollYProgress, [0.5, 0.8], [1, 0])
-
-  const linktreeOpacity = useTransform(scrollYProgress, [0.5, 0.7, 1], [0, 1, 1])
-  const linktreeY = useTransform(scrollYProgress, [0.5, 0.7, 1], ['10vh', '0vh', '0vh'])
-  const linktreePointerEvents = useTransform(scrollYProgress, (v) => v >= 0.6 ? 'auto' : 'none')
-  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0])
-  const scrollIndicatorDisplay = useTransform(scrollYProgress, (v) => v > 0.05 ? 'none' : 'flex')
-
   function handleRedirect(platform: string, url: string) {
     console.log("fbq('track', 'Lead', { content_name: platform, song: config.songTitle })", {
       metaPixelId: config.metaPixelId,
@@ -107,11 +91,11 @@ export default function ClientPage({ config }: { config: Config }) {
   const buttonsToRender = Array.isArray(config.buttons) ? config.buttons : [];
 
   return (
-    <div ref={containerRef} className="relative h-[400vh] bg-[#000] overflow-x-clip">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
-
-        {/* === 0. UNIVERSE E BACKGROUND EFFECTS (z-0) === */}
-        <div className="absolute inset-0 z-0 pointer-events-none bg-[#030008]">
+    <div className="relative flex min-h-[100dvh] w-full flex-col bg-[#000] overflow-hidden">
+      
+      {/* === 0. UNIVERSE E BACKGROUND EFFECTS STICKY SU TUTTA LA PAGINA === */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[#030008]">
           <div
             className="absolute inset-0 opacity-80 mix-blend-screen bg-cover bg-center"
             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop')" }}
@@ -161,8 +145,18 @@ export default function ClientPage({ config }: { config: Config }) {
 
         {/* === 2. BOY LAYER (z-20) === */}
         <motion.div
-          className="pointer-events-none absolute left-1/2 top-[30%] z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transform-gpu will-change-transform"
-          style={{ y: boyY, scale: boyScale, opacity: boyOpacity }}
+          className="pointer-events-none absolute left-1/2 top-0 z-20 flex -translate-x-1/2 items-center justify-center transform-gpu will-change-transform"
+          initial={{ y: '-20dvh', scale: 1, opacity: 1 }}
+          animate={{ 
+            y: ['-20dvh', '120dvh'],
+            scale: [1, 1, 0.5],
+            opacity: [1, 1, 0]
+          }}
+          transition={{
+            duration: 3.5,
+            times: [0, 0.6, 1],
+            ease: "easeInOut"
+          }}
         >
           <motion.div
             animate={{
@@ -171,34 +165,42 @@ export default function ClientPage({ config }: { config: Config }) {
             }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <img src="/costa_che_cade.png" alt="Costa che cade" className="w-64 h-64 object-contain opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+            <img src="/costa_che_cade.png" alt="Costa che cade" className="w-[35dvh] max-w-[250px] object-contain opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
           </motion.div>
         </motion.div>
+      </div>
 
-        {/* === 3. PRESENTATION CONTENT (z-30) Appare alla fine === */}
+      {/* === 3. PRESENTATION CONTENT === */}
+      {/* Contenitore con scroll nativo se necessario, senza barra */}
+      <div className="relative z-30 flex flex-1 w-full flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <motion.main
-          className="absolute inset-0 z-30 overflow-y-auto overflow-x-hidden"
-          style={{ opacity: linktreeOpacity, y: linktreeY, pointerEvents: linktreePointerEvents as any }}
+          className="flex min-h-full w-full flex-col items-center justify-center py-[4dvh] px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 2.2, ease: "easeOut" }}
         >
-          <div className="flex min-h-full w-full flex-col items-center justify-start">
-            <div className="relative mx-auto flex w-full max-w-md flex-col my-auto px-6 pb-24 pt-12">
-            <header className="flex items-center justify-center">
-              <span className="text-xl font-extralight tracking-[0.35em] text-white [text-shadow:0_0_20px_rgba(255,255,255,0.6),0_0_40px_rgba(255,255,255,0.4)]">GRIM UNIVERSE</span>
+          <div className="relative mx-auto flex w-full max-w-md flex-col items-center my-auto">
+            <header className="flex items-center justify-center mb-[3dvh]">
+              <span className="text-[2dvh] sm:text-xl font-extralight tracking-[0.35em] text-white [text-shadow:0_0_20px_rgba(255,255,255,0.6),0_0_40px_rgba(255,255,255,0.4)]">GRIM UNIVERSE</span>
             </header>
 
-            <section className="flex flex-1 flex-col items-center justify-center py-12" aria-labelledby="release-title">
+            <section className="flex w-full flex-col items-center justify-center" aria-labelledby="release-title">
               <div className="relative">
                 <div className="absolute -inset-5 rounded-2xl bg-violet-500/10 blur-3xl" />
-                <img src={config.coverImageUrl} alt={`${config.artistName} — ${config.songTitle} cover art`} className="relative aspect-square w-64 rounded-xl object-cover shadow-[0_0_60px_rgba(139,92,246,0.3)] ring-1 ring-white/10 sm:w-72" />
+                <img 
+                  src={config.coverImageUrl} 
+                  alt={`${config.artistName} — ${config.songTitle} cover art`} 
+                  className="relative aspect-square w-[22dvh] min-w-[140px] max-w-[240px] rounded-xl object-cover shadow-[0_0_60px_rgba(139,92,246,0.3)] ring-1 ring-white/10" 
+                />
               </div>
 
-              <div className="mt-8 text-center">
-                <p className="mb-4 text-xs font-light uppercase tracking-[0.3em] text-white/70">New release</p>
-                <h1 id="release-title" className="text-4xl font-medium tracking-[0.15em] text-white [text-shadow:0_0_15px_rgba(255,255,255,0.8),0_0_30px_rgba(255,255,255,0.3)]">{config.songTitle}</h1>
-                <p className="mt-3 text-lg font-light tracking-[0.2em] text-white/80 [text-shadow:0_0_10px_rgba(255,255,255,0.4)]">{config.artistName}</p>
+              <div className="mt-[3dvh] text-center">
+                <p className="mb-[1dvh] text-[clamp(10px,1.2dvh,14px)] font-light uppercase tracking-[0.3em] text-white/70">New release</p>
+                <h1 id="release-title" className="text-[clamp(24px,3.5dvh,40px)] font-medium tracking-[0.15em] text-white [text-shadow:0_0_15px_rgba(255,255,255,0.8),0_0_30px_rgba(255,255,255,0.3)] leading-tight">{config.songTitle}</h1>
+                <p className="mt-[1dvh] text-[clamp(14px,2dvh,24px)] font-light tracking-[0.2em] text-white/80 [text-shadow:0_0_10px_rgba(255,255,255,0.4)]">{config.artistName}</p>
               </div>
 
-              <div className="mt-9 flex w-full flex-col gap-5">
+              <div className="mt-[4dvh] flex w-full flex-col gap-[clamp(12px,1.5dvh,24px)]">
                 {buttonsToRender.map((btn) => {
                   const Icon = IconMap[btn.icon] || LinkIcon;
                   const rgb = hexToRgb(btn.color);
@@ -209,7 +211,7 @@ export default function ClientPage({ config }: { config: Config }) {
                       key={btn.id}
                       type="button"
                       onClick={() => handleRedirect(btn.id, btn.url)}
-                      className={`group relative flex h-[68px] w-full items-center justify-between overflow-hidden rounded-xl bg-black/70 backdrop-blur-md px-6 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] active:scale-[0.97] border-2 ${dynamicClassName}`}
+                      className={`group relative flex h-[clamp(50px,7.5dvh,75px)] w-full items-center justify-between overflow-hidden rounded-xl bg-black/70 backdrop-blur-md px-[clamp(16px,2dvw,24px)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] active:scale-[0.97] border-2 ${dynamicClassName}`}
                     >
                       <style dangerouslySetInnerHTML={{
                         __html: `
@@ -223,21 +225,21 @@ export default function ClientPage({ config }: { config: Config }) {
                         }
                       `}} />
 
-                      <div className="z-10 flex items-center gap-4">
+                      <div className="z-10 flex items-center gap-3 sm:gap-4">
                         <Icon
-                          className={`size-[24px] transition-colors duration-300 drop-shadow-[0_0_10px_currentColor]`}
+                          className="size-[clamp(20px,2.8dvh,32px)] transition-colors duration-300 drop-shadow-[0_0_10px_currentColor]"
                           strokeWidth={2.5}
                           style={{ color: btn.color }}
                         />
                         <span
-                          className="text-[13px] font-medium tracking-[0.25em] uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/90"
+                          className="text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/90 truncate max-w-[200px]"
                         >
                           {btn.label}
                         </span>
                       </div>
                       {btn.isPrimary && (
-                        <div className="z-10 flex size-9 items-center justify-center rounded-full bg-white/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-[0_0_15px_white]">
-                          <Play className="size-4 fill-black text-black ml-1" />
+                        <div className="z-10 flex size-[clamp(30px,4dvh,45px)] items-center justify-center rounded-full bg-white/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-[0_0_15px_white]">
+                          <Play className="size-[clamp(14px,2dvh,20px)] fill-black text-black ml-0.5" />
                         </div>
                       )}
                     </button>
@@ -246,25 +248,9 @@ export default function ClientPage({ config }: { config: Config }) {
               </div>
             </section>
 
-            <footer className="mt-16 pb-12 text-center text-xs font-light uppercase tracking-[0.3em] text-muted-foreground/60">Press play. Enter the void.</footer>
-            </div>
+            <footer className="mt-[5dvh] text-center text-[clamp(10px,1.2dvh,14px)] font-light uppercase tracking-[0.3em] text-muted-foreground/60">Press play. Enter the void.</footer>
           </div>
         </motion.main>
-
-        {/* === 4. SCROLL INDICATOR (z-40) === */}
-        <motion.div
-          className="pointer-events-none absolute bottom-8 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center gap-3 text-white/90"
-          style={{ opacity: scrollIndicatorOpacity, display: scrollIndicatorDisplay as any }}
-        >
-          <span className="text-[10px] font-medium uppercase tracking-[0.35em] text-center max-w-[250px] drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/80">Scorri per entrare nel mio universo</span>
-          <motion.div
-            animate={{ y: [0, 8, 0], opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <ChevronDown className="w-6 h-6 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" strokeWidth={2} />
-          </motion.div>
-        </motion.div>
-
       </div>
     </div>
   )
