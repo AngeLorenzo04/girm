@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { type Config, type CustomButton } from '@/components/ClientPage'
 import { saveConfig } from '@/app/actions'
 import { useRouter } from 'next/navigation'
-import { Trash2, Plus } from 'lucide-react'
+import { Trash2, Plus, Crop } from 'lucide-react'
+import Cropper from 'react-easy-crop'
+import { getCroppedImg } from '@/lib/cropImage'
 
 const AVAILABLE_ICONS = [
   { value: 'Headphones', label: 'Cuffie (Spotify)' },
@@ -26,6 +28,13 @@ export default function AdminForm({ initialConfig }: { initialConfig: Config }) 
   })
   const [isSaving, setIsSaving] = useState(false)
   const router = useRouter()
+
+  // Cropper State
+  const [isCropping, setIsCropping] = useState(false)
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null)
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,32 +59,37 @@ export default function AdminForm({ initialConfig }: { initialConfig: Config }) 
 
     const reader = new FileReader()
     reader.onload = (event) => {
-      const img = new window.Image()
-      img.onload = () => {
-        const canvas = document.createElement('canvas')
-        const MAX_SIZE = 600
-        
-        let width = img.width
-        let height = img.height
-        
-        // Ritaglia in un quadrato perfetto (cover) dal centro
-        const size = Math.min(width, height)
-        const startX = (width - size) / 2
-        const startY = (height - size) / 2
-
-        canvas.width = MAX_SIZE
-        canvas.height = MAX_SIZE
-
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          ctx.drawImage(img, startX, startY, size, size, 0, 0, MAX_SIZE, MAX_SIZE)
-          const base64 = canvas.toDataURL('image/jpeg', 0.75) // Qualità al 75% per stare sotto i 100kb
-          handleChange('coverImageUrl', base64)
-        }
-      }
-      img.src = event.target?.result as string
+      setImageToCrop(event.target?.result as string)
+      setIsCropping(true)
+      setCrop({ x: 0, y: 0 })
+      setZoom(1)
     }
     reader.readAsDataURL(file)
+    // Resetta l'input per permettere di ricaricare la stessa immagine se annullato
+    e.target.value = ''
+  }
+
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
+  const handleCropConfirm = async () => {
+    if (!imageToCrop || !croppedAreaPixels) return
+    try {
+      const croppedBase64 = await getCroppedImg(imageToCrop, croppedAreaPixels)
+      if (croppedBase64) {
+        handleChange('coverImageUrl', croppedBase64)
+      }
+      setIsCropping(false)
+      setImageToCrop(null)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const handleCropCancel = () => {
+    setIsCropping(false)
+    setImageToCrop(null)
   }
 
   const handleButtonChange = (id: string, field: keyof CustomButton, value: any) => {
@@ -280,6 +294,57 @@ export default function AdminForm({ initialConfig }: { initialConfig: Config }) 
       >
         {isSaving ? 'Salvataggio...' : 'SALVA TUTTE LE MODIFICHE'}
       </button>
+
+      {/* MODALE DI RITAGLIO IMMAGINE */}
+      {isCropping && imageToCrop && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-xl">
+          <div className="relative flex-1 mt-4 mx-4 mb-4 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+            <Cropper
+              image={imageToCrop}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+              objectFit="vertical-cover"
+            />
+          </div>
+          <div className="p-6 bg-[#0a0a0a] border-t border-white/10 space-y-6 pb-safe">
+            <div className="flex items-center gap-4 px-2">
+              <span className="text-xs uppercase tracking-widest text-white/50">Zoom:</span>
+              <input
+                type="range"
+                value={zoom}
+                min={1}
+                max={3}
+                step={0.05}
+                aria-labelledby="Zoom"
+                onChange={(e) => {
+                  setZoom(Number(e.target.value))
+                }}
+                className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white"
+              />
+            </div>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={handleCropCancel}
+                className="flex-1 py-4 px-4 rounded-xl border border-white/20 text-white font-medium hover:bg-white/10 transition-colors"
+              >
+                Annulla
+              </button>
+              <button
+                type="button"
+                onClick={handleCropConfirm}
+                className="flex-1 py-4 px-4 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+              >
+                <Crop className="w-5 h-5" /> Ritaglia e Conferma
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </form>
   )
