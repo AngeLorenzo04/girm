@@ -297,8 +297,8 @@ export default function AdminForm({ initialConfig }: { initialConfig: Config }) 
 
       {/* MODALE DI RITAGLIO IMMAGINE */}
       {isCropping && imageToCrop && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-xl">
-          <div className="relative flex-1 mt-4 mx-4 mb-4 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex flex-col bg-black/95 backdrop-blur-xl h-[100dvh]">
+          <div className="relative flex-1 mt-4 mx-4 mb-4 rounded-2xl overflow-hidden border border-white/10 shadow-2xl touch-none">
             <Cropper
               image={imageToCrop}
               crop={crop}
@@ -307,7 +307,6 @@ export default function AdminForm({ initialConfig }: { initialConfig: Config }) 
               onCropChange={setCrop}
               onCropComplete={onCropComplete}
               onZoomChange={setZoom}
-              objectFit="vertical-cover"
             />
           </div>
           <div className="p-6 bg-[#0a0a0a] border-t border-white/10 space-y-6 pb-safe">
