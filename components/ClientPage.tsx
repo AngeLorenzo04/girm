@@ -64,9 +64,9 @@ const generateStarShadows = (count: number, maxRadius: number, seedOffset: numbe
   return shadows.join(', ');
 }
 
-const smallStars = generateStarShadows(300, 0.5, 0);
-const mediumStars = generateStarShadows(150, 1, 5000);
-const largeStars = generateStarShadows(50, 1.5, 10000);
+const smallStars = generateStarShadows(150, 0.5, 0);
+const mediumStars = generateStarShadows(75, 1, 5000);
+const largeStars = generateStarShadows(25, 1.5, 10000);
 
 const comets = [
   { top: 10, left: -10, delay: 1, duration: 4, width: 80, rotate: 35, dx: 1228, dy: 860 },
@@ -118,9 +118,9 @@ export default function ClientPage({ config }: { config: Config }) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#05010a]/50 to-[#030008] opacity-90" />
 
-          <div suppressHydrationWarning className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full" style={{ boxShadow: smallStars }} />
-          <div suppressHydrationWarning className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full" style={{ boxShadow: mediumStars }} />
-          <div suppressHydrationWarning className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full" style={{ boxShadow: largeStars }} />
+          <div suppressHydrationWarning className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full transform-gpu will-change-transform" style={{ boxShadow: smallStars }} />
+          <div suppressHydrationWarning className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full transform-gpu will-change-transform" style={{ boxShadow: mediumStars }} />
+          <div suppressHydrationWarning className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full transform-gpu will-change-transform" style={{ boxShadow: largeStars }} />
 
           {comets.map((comet, i) => (
             <motion.div
@@ -147,12 +147,12 @@ export default function ClientPage({ config }: { config: Config }) {
           ))}
 
           <motion.div
-            className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-violet-500/20 blur-[110px]"
+            className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-violet-500/20 blur-[110px] transform-gpu will-change-transform"
             animate={{ x: [0, 45, 0], y: [0, -25, 0], scale: [1, 1.12, 1] }}
             transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute -right-32 top-1/3 h-80 w-80 rounded-full bg-cyan-400/10 blur-[120px]"
+            className="absolute -right-32 top-1/3 h-80 w-80 rounded-full bg-cyan-400/10 blur-[120px] transform-gpu will-change-transform"
             animate={{ x: [0, -35, 0], y: [0, 30, 0], scale: [1, 1.18, 1] }}
             transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -161,7 +161,7 @@ export default function ClientPage({ config }: { config: Config }) {
 
         {/* === 2. BOY LAYER (z-20) === */}
         <motion.div
-          className="pointer-events-none absolute left-1/2 top-[30%] z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+          className="pointer-events-none absolute left-1/2 top-[30%] z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transform-gpu will-change-transform"
           style={{ y: boyY, scale: boyScale, opacity: boyOpacity }}
         >
           <motion.div
@@ -177,7 +177,7 @@ export default function ClientPage({ config }: { config: Config }) {
 
         {/* === 3. PRESENTATION CONTENT (z-30) Appare alla fine === */}
         <motion.main
-          className="absolute inset-0 z-30 overflow-y-auto overflow-x-hidden"
+          className="absolute inset-0 z-30 overflow-y-auto overflow-x-hidden transform-gpu will-change-transform"
           style={{ opacity: linktreeOpacity, y: linktreeY, pointerEvents: linktreePointerEvents as any }}
         >
           <div className="flex min-h-full w-full flex-col items-center justify-start">
