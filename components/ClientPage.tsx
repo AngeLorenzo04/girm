@@ -177,7 +177,7 @@ export default function ClientPage({ config }: { config: Config }) {
 
         {/* === 3. PRESENTATION CONTENT (z-30) Appare alla fine === */}
         <motion.main
-          className="absolute inset-0 z-30 overflow-y-auto overflow-x-hidden transform-gpu will-change-transform"
+          className="absolute inset-0 z-30 overflow-y-auto overflow-x-hidden"
           style={{ opacity: linktreeOpacity, y: linktreeY, pointerEvents: linktreePointerEvents as any }}
         >
           <div className="flex min-h-full w-full flex-col items-center justify-start">
