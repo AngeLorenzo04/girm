@@ -107,7 +107,7 @@ export default function ClientPage({ config }: { config: Config }) {
   const buttonsToRender = Array.isArray(config.buttons) ? config.buttons : [];
 
   return (
-    <div ref={containerRef} className="relative h-[400vh] bg-[#000]">
+    <div ref={containerRef} className="relative h-[400vh] bg-[#000] overflow-x-clip">
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
 
         {/* === 0. UNIVERSE E BACKGROUND EFFECTS (z-0) === */}
