@@ -177,10 +177,11 @@ export default function ClientPage({ config }: { config: Config }) {
 
         {/* === 3. PRESENTATION CONTENT (z-30) Appare alla fine === */}
         <motion.main
-          className="absolute inset-0 z-30 flex flex-col items-center justify-center text-foreground"
+          className="absolute inset-0 z-30 overflow-y-auto overflow-x-hidden"
           style={{ opacity: linktreeOpacity, y: linktreeY, pointerEvents: linktreePointerEvents as any }}
         >
-          <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col px-6 pb-56 pt-8 sm:pt-12">
+          <div className="flex min-h-full w-full flex-col items-center justify-start">
+            <div className="relative mx-auto flex w-full max-w-md flex-col my-auto px-6 pb-24 pt-12">
             <header className="flex items-center justify-center">
               <span className="font-sans text-xl font-medium tracking-[0.32em] text-white [text-shadow:0_0_15px_rgba(255,255,255,1),0_0_30px_rgba(255,255,255,0.8),0_0_50px_rgba(255,255,255,0.5)]">GRIM UNIVERSE</span>
             </header>
@@ -246,6 +247,7 @@ export default function ClientPage({ config }: { config: Config }) {
             </section>
 
             <footer className="mt-16 pb-12 text-center font-mono text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground/70">Press play. Enter the void.</footer>
+            </div>
           </div>
         </motion.main>
 
