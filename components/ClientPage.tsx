@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
 import { Camera, Headphones, Music2, Play, Link as LinkIcon, Video, MessageSquare, Music, Globe, ChevronDown } from 'lucide-react'
 
 export type CustomButton = {
@@ -74,6 +74,26 @@ const comets = [
 ];
 
 export default function ClientPage({ config }: { config: Config }) {
+  const { scrollYProgress } = useScroll()
+
+  // The boy falls during the first 50% of the page scroll (which corresponds to 100vh of scrolling)
+  const boyY = useTransform(scrollYProgress, [0, 0.5], ['-40vh', '150vh'])
+  const boyScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.5])
+  const boyOpacity = useTransform(scrollYProgress, [0, 0.4, 0.5], [1, 1, 0])
+
+  // Le info appaiono con un fade-in quando si supera il 55% dello scroll, 
+  // e rimangono visibili per sempre (nessun fade-out in uscita/salita)
+  const [infoVisible, setInfoVisible] = useState(false)
+  
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > 0.55 && !infoVisible) {
+      setInfoVisible(true)
+    }
+  })
+  
+  // Scroll indicator fades out immediately
+  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0])
+
   function handleRedirect(platform: string, url: string) {
     console.log("fbq('track', 'Lead', { content_name: platform, song: config.songTitle })", {
       metaPixelId: config.metaPixelId,
@@ -91,10 +111,10 @@ export default function ClientPage({ config }: { config: Config }) {
   const buttonsToRender = Array.isArray(config.buttons) ? config.buttons : [];
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full flex-col bg-[#000] overflow-hidden">
+    <div className="relative flex min-h-[100dvh] w-full flex-col bg-[#000]">
       
       {/* === 0. UNIVERSE E BACKGROUND EFFECTS STICKY SU TUTTA LA PAGINA === */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[#030008]">
           <div
             className="absolute inset-0 opacity-80 mix-blend-screen bg-cover bg-center"
@@ -142,22 +162,13 @@ export default function ClientPage({ config }: { config: Config }) {
           />
           <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_30%_20%,rgba(255,255,255,.5)_0_1px,transparent_1px),radial-gradient(circle_at_70%_60%,rgba(255,255,255,.35)_0_1px,transparent_1px)] [background-size:140px_140px,210px_210px]" />
         </div>
+      </div>
 
-        {/* === 2. BOY LAYER (z-20) === */}
-        <motion.div
-          className="pointer-events-none absolute left-1/2 top-0 z-20 flex -translate-x-1/2 items-center justify-center transform-gpu will-change-transform"
-          initial={{ y: '-20dvh', scale: 1, opacity: 1 }}
-          animate={{ 
-            y: ['-20dvh', '120dvh'],
-            scale: [1, 1, 0.5],
-            opacity: [1, 1, 0]
-          }}
-          transition={{
-            duration: 3.5,
-            times: [0, 0.6, 1],
-            ease: "easeInOut"
-          }}
-        >
+      {/* === 2. BOY LAYER (z-20) === */}
+      <motion.div
+        className="pointer-events-none fixed left-1/2 top-0 z-20 flex items-center justify-center transform-gpu will-change-transform"
+        style={{ x: '-50%', y: boyY, scale: boyScale, opacity: infoVisible ? 0 : boyOpacity }}
+      >
           <motion.div
             animate={{
               x: [-15, 25, -20, 10, -15],
@@ -167,17 +178,27 @@ export default function ClientPage({ config }: { config: Config }) {
           >
             <img src="/costa_che_cade.png" alt="Costa che cade" className="w-[35dvh] max-w-[250px] object-contain opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
           </motion.div>
-        </motion.div>
-      </div>
+      </motion.div>
+
+      {/* === SCROLL INDICATOR === */}
+      <motion.div 
+        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-70 z-40 pointer-events-none"
+        style={{ opacity: indicatorOpacity }}
+      >
+        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 drop-shadow-md">Scroll down</span>
+        <ChevronDown className="size-5 text-white animate-bounce drop-shadow-md" />
+      </motion.div>
 
       {/* === 3. PRESENTATION CONTENT === */}
-      {/* Contenitore con scroll nativo se necessario, senza barra */}
-      <div className="relative z-30 flex flex-1 w-full flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <motion.main
-          className="flex min-h-full w-full flex-col items-center justify-center py-[4dvh] px-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 2.2, ease: "easeOut" }}
+      <motion.div 
+        className="fixed inset-0 z-30 flex flex-col overflow-y-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: infoVisible ? 1 : 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        style={{ pointerEvents: infoVisible ? 'auto' : 'none' }}
+      >
+        <main
+          className="flex min-h-[100dvh] w-full flex-col items-center justify-center py-[4dvh] px-4"
         >
           <div className="relative mx-auto flex w-full max-w-md flex-col items-center my-auto">
             <header className="flex items-center justify-center mb-[3dvh]">
@@ -250,8 +271,11 @@ export default function ClientPage({ config }: { config: Config }) {
 
             <footer className="mt-[5dvh] text-center text-[clamp(10px,1.2dvh,14px)] font-light uppercase tracking-[0.3em] text-muted-foreground/60">Press play. Enter the void.</footer>
           </div>
-        </motion.main>
-      </div>
+        </main>
+      </motion.div>
+
+      {/* Invisibile scroll area per permettere l'animazione di scorrimento */}
+      <div className="h-[250vh] w-full pointer-events-none" />
     </div>
   )
 }
