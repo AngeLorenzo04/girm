@@ -197,7 +197,11 @@ export default function ClientPage({ config }: { config: Config }) {
         style={{ pointerEvents: infoVisible ? 'auto' : 'none' }}
       >
         <main
-          className="flex min-h-[100dvh] w-full flex-col items-center justify-center py-[4dvh] px-4"
+          className="flex min-h-[100dvh] w-full flex-col items-center justify-center px-4"
+          style={{ 
+            paddingTop: 'max(4dvh, env(safe-area-inset-top))', 
+            paddingBottom: 'max(4dvh, env(safe-area-inset-bottom))' 
+          }}
         >
           <div className="relative mx-auto flex w-full max-w-md flex-col items-center my-auto">
             <header className="flex items-center justify-center mb-[3dvh]">
