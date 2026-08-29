@@ -10,9 +10,8 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'GRIM — NOME SINGOLO',
-  description: 'Listen to NOME SINGOLO by Grim.',
-  generator: 'v0.app',
+  title: 'GRIM UNIVERSE',
+  description: 'GRIM UNIVERSE',
   icons: {
     icon: [
       {
