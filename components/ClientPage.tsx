@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
+import Script from 'next/script'
 import { Camera, Headphones, Music2, Play, Link as LinkIcon, Video, MessageSquare, Music, Globe, ChevronDown } from 'lucide-react'
 
 export type CustomButton = {
@@ -109,8 +110,36 @@ export default function ClientPage({ config }: { config: Config }) {
   // Se i bottoni non sono ancora definiti (fallback vecchio), mostriamo niente per evitare crash prima del salvataggio
   const buttonsToRender = Array.isArray(config.buttons) ? config.buttons : [];
 
+  const pixelId = config.metaPixelId || '1055973320477956';
+
   return (
-    <div className="relative flex min-h-[100dvh] w-full flex-col bg-[#000]">
+    <>
+      {/* === META PIXEL CODE === */}
+      <Script id="meta-pixel" strategy="afterInteractive">
+        {`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '${pixelId}');
+          fbq('track', 'PageView');
+        `}
+      </Script>
+      <noscript>
+        <img 
+          height="1" 
+          width="1" 
+          style={{ display: 'none' }}
+          src={\`https://www.facebook.com/tr?id=\${pixelId}&ev=PageView&noscript=1\`}
+          alt=""
+        />
+      </noscript>
+
+      <div className="relative flex min-h-[100dvh] w-full flex-col bg-[#000]">
       
       {/* === 0. UNIVERSE E BACKGROUND EFFECTS STICKY SU TUTTA LA PAGINA === */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -280,5 +309,6 @@ export default function ClientPage({ config }: { config: Config }) {
       {/* Invisibile scroll area per permettere l'animazione di scorrimento */}
       <div className="h-[300vh] w-full pointer-events-none" />
     </div>
+    </>
   )
 }
