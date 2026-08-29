@@ -76,17 +76,16 @@ const comets = [
 export default function ClientPage({ config }: { config: Config }) {
   const { scrollYProgress } = useScroll()
 
-  // The boy falls during the first 50% of the page scroll (which corresponds to 100vh of scrolling)
-  const boyY = useTransform(scrollYProgress, [0, 0.5], ['-40vh', '150vh'])
-  const boyScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.5])
-  const boyOpacity = useTransform(scrollYProgress, [0, 0.4, 0.5], [1, 1, 0])
+  // Il ragazzo cade più lentamente, spalmando l'animazione sull'80% dello scroll
+  const boyY = useTransform(scrollYProgress, [0, 0.8], ['-40vh', '150vh'])
+  const boyScale = useTransform(scrollYProgress, [0, 0.8], [1, 0.5])
+  const boyOpacity = useTransform(scrollYProgress, [0, 0.7, 0.8], [1, 1, 0])
 
-  // Le info appaiono con un fade-in quando si supera il 55% dello scroll, 
-  // e rimangono visibili per sempre (nessun fade-out in uscita/salita)
+  // Le info appaiono con un fade-in non appena la caduta finisce (0.81)
   const [infoVisible, setInfoVisible] = useState(false)
   
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest > 0.55 && !infoVisible) {
+    if (latest > 0.81 && !infoVisible) {
       setInfoVisible(true)
     }
   })
@@ -183,7 +182,7 @@ export default function ClientPage({ config }: { config: Config }) {
       {/* === SCROLL INDICATOR === */}
       <motion.div 
         className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-70 z-40 pointer-events-none"
-        style={{ opacity: indicatorOpacity }}
+        style={{ opacity: infoVisible ? 0 : indicatorOpacity }}
       >
         <span className="text-xs uppercase tracking-widest text-white/70 mb-2 drop-shadow-md">Scroll down</span>
         <ChevronDown className="size-5 text-white animate-bounce drop-shadow-md" />
@@ -275,7 +274,7 @@ export default function ClientPage({ config }: { config: Config }) {
       </motion.div>
 
       {/* Invisibile scroll area per permettere l'animazione di scorrimento */}
-      <div className="h-[250vh] w-full pointer-events-none" />
+      <div className="h-[300vh] w-full pointer-events-none" />
     </div>
   )
 }
