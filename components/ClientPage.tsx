@@ -179,12 +179,12 @@ export default function ClientPage({ config }: { config: Config }) {
           ))}
 
           <motion.div
-            className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-violet-500/20 blur-[110px] transform-gpu will-change-transform"
+            className="absolute -left-24 top-20 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.15)_0%,transparent_60%)] transform-gpu will-change-transform"
             animate={{ x: [0, 45, 0], y: [0, -25, 0], scale: [1, 1.12, 1] }}
             transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute -right-32 top-1/3 h-80 w-80 rounded-full bg-cyan-400/10 blur-[120px] transform-gpu will-change-transform"
+            className="absolute -right-32 top-1/3 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1)_0%,transparent_60%)] transform-gpu will-change-transform"
             animate={{ x: [0, -35, 0], y: [0, 30, 0], scale: [1, 1.18, 1] }}
             transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -204,7 +204,7 @@ export default function ClientPage({ config }: { config: Config }) {
             }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <img src="/costa_che_cade.png" alt="Costa che cade" className="w-[35dvh] max-w-[250px] object-contain opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+            <img src="/costa_che_cade.png" alt="Costa che cade" className="w-[35dvh] max-w-[250px] object-contain opacity-90" />
           </motion.div>
       </motion.div>
 
@@ -213,7 +213,7 @@ export default function ClientPage({ config }: { config: Config }) {
         className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-70 z-40 pointer-events-none"
         style={{ opacity: infoVisible ? 0 : indicatorOpacity }}
       >
-        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 drop-shadow-md">Scroll down</span>
+        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">Scroll down</span>
         <ChevronDown className="size-5 text-white animate-bounce drop-shadow-md" />
       </motion.div>
 
@@ -280,12 +280,12 @@ export default function ClientPage({ config }: { config: Config }) {
 
                       <div className="z-10 flex items-center gap-3 sm:gap-4">
                         <Icon
-                          className="size-[clamp(20px,2.8dvh,32px)] transition-colors duration-300 drop-shadow-[0_0_10px_currentColor]"
+                          className="size-[clamp(20px,2.8dvh,32px)] transition-colors duration-300"
                           strokeWidth={2.5}
                           style={{ color: btn.color }}
                         />
                         <span
-                          className="text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] text-white/90"
+                          className="text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase [text-shadow:0_0_10px_rgba(255,255,255,0.5)] text-white/90"
                         >
                           {btn.label}
                         </span>
