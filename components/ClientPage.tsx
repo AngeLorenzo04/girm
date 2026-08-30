@@ -213,7 +213,7 @@ export default function ClientPage({ config }: { config: Config }) {
         className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-70 z-40 pointer-events-none"
         style={{ opacity: infoVisible ? 0 : indicatorOpacity }}
       >
-        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">Scroll down</span>
+        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">scorri per entrare nel mio universo</span>
         <ChevronDown className="size-5 text-white animate-bounce drop-shadow-md" />
       </motion.div>
 
