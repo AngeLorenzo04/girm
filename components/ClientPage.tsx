@@ -157,7 +157,7 @@ export default function ClientPage({ config }: { config: Config }) {
           {comets.map((comet, i) => (
             <motion.div
               key={`comet-${i}`}
-              className="absolute h-[1px] origin-right bg-gradient-to-r from-transparent via-cyan-200 to-white"
+              className="absolute h-[1px] origin-right bg-gradient-to-r from-transparent via-cyan-200 to-white transform-gpu will-change-transform"
               style={{
                 top: `${comet.top}%`,
                 left: `${comet.left}%`,
@@ -167,26 +167,26 @@ export default function ClientPage({ config }: { config: Config }) {
               animate={{
                 x: [0, comet.dx],
                 y: [0, comet.dy],
-                opacity: [0, 1, 0],
+                opacity: [0, 1, 0, 0],
               }}
               transition={{
                 duration: comet.duration,
                 repeat: Infinity,
                 delay: comet.delay,
-                ease: 'linear',
+                ease: [0.25, 0.1, 0.25, 1],
               }}
             />
           ))}
 
           <motion.div
             className="absolute -left-24 top-20 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.15)_0%,transparent_60%)] transform-gpu will-change-transform"
-            animate={{ x: [0, 45, 0], y: [0, -25, 0], scale: [1, 1.12, 1] }}
-            transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ x: [0, 40, -10, 0], y: [0, -30, 10, 0], scale: [1, 1.1, 0.95, 1] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
             className="absolute -right-32 top-1/3 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1)_0%,transparent_60%)] transform-gpu will-change-transform"
-            animate={{ x: [0, -35, 0], y: [0, 30, 0], scale: [1, 1.18, 1] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ x: [0, -30, 15, 0], y: [0, 35, -15, 0], scale: [1, 1.15, 0.9, 1] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
           />
           <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_30%_20%,rgba(255,255,255,.5)_0_1px,transparent_1px),radial-gradient(circle_at_70%_60%,rgba(255,255,255,.35)_0_1px,transparent_1px)] [background-size:140px_140px,210px_210px]" />
         </div>
@@ -199,12 +199,13 @@ export default function ClientPage({ config }: { config: Config }) {
       >
           <motion.div
             animate={{
-              x: [-15, 25, -20, 10, -15],
-              rotate: [-5, 12, -8, 15, -5]
+              x: [-10, 15, -10],
+              y: [-12, 12, -12],
+              rotate: [-4, 6, -4]
             }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <img src="/costa_che_cade.png" alt="Costa che cade" className="w-[35dvh] max-w-[250px] object-contain opacity-90" />
+            <img src="/costa_che_cade.png" alt="Costa che cade" className="w-[35dvh] max-w-[250px] object-contain opacity-90 drop-shadow-2xl" />
           </motion.div>
       </motion.div>
 
@@ -214,15 +215,24 @@ export default function ClientPage({ config }: { config: Config }) {
         style={{ opacity: infoVisible ? 0 : indicatorOpacity }}
       >
         <span className="text-xs uppercase tracking-widest text-white/70 mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">scorri per entrare nel mio universo</span>
-        <ChevronDown className="size-5 text-white animate-bounce drop-shadow-md" />
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown className="size-5 text-white drop-shadow-md" />
+        </motion.div>
       </motion.div>
 
       {/* === 3. PRESENTATION CONTENT === */}
       <motion.div 
-        className="fixed inset-0 z-30 flex flex-col overflow-y-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: infoVisible ? 1 : 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="fixed inset-0 z-30 flex flex-col overflow-y-auto transform-gpu will-change-transform"
+        initial={{ opacity: 0, y: 30, scale: 0.96 }}
+        animate={{ 
+          opacity: infoVisible ? 1 : 0,
+          y: infoVisible ? 0 : 30,
+          scale: infoVisible ? 1 : 0.96
+        }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         style={{ pointerEvents: infoVisible ? 'auto' : 'none' }}
       >
         <main
@@ -238,14 +248,18 @@ export default function ClientPage({ config }: { config: Config }) {
             </header>
 
             <section className="flex w-full flex-col items-center justify-center" aria-labelledby="release-title">
-              <div className="relative">
+              <motion.div 
+                className="relative"
+                animate={{ y: [-5, 5, -5] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              >
                 <div className="absolute -inset-5 rounded-2xl bg-violet-500/10 blur-3xl" />
                 <img 
                   src={config.coverImageUrl} 
                   alt={`${config.artistName} — ${config.songTitle} cover art`} 
                   className="relative aspect-square w-[22dvh] min-w-[140px] max-w-[240px] rounded-xl object-cover shadow-[0_0_60px_rgba(139,92,246,0.3)] ring-1 ring-white/10" 
                 />
-              </div>
+              </motion.div>
 
               <div className="mt-[3dvh] text-center">
                 <p className="mb-[1dvh] text-[clamp(10px,1.2dvh,14px)] font-light uppercase tracking-[0.3em] text-white/70">New release</p>
@@ -264,7 +278,7 @@ export default function ClientPage({ config }: { config: Config }) {
                       key={btn.id}
                       type="button"
                       onClick={() => handleRedirect(btn.id, btn.url)}
-                      className={`group relative flex h-[clamp(50px,7.5dvh,75px)] w-full items-center justify-between overflow-hidden rounded-xl bg-black/70 backdrop-blur-md px-[clamp(16px,2dvw,24px)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] active:scale-[0.97] border-2 ${dynamicClassName}`}
+                      className={`group relative flex h-[clamp(50px,7.5dvh,75px)] w-full items-center justify-between overflow-hidden rounded-xl bg-black/70 backdrop-blur-md px-[clamp(16px,2dvw,24px)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] border-2 ${dynamicClassName}`}
                     >
                       <style dangerouslySetInnerHTML={{
                         __html: `
