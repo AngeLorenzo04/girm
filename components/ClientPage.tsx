@@ -321,7 +321,7 @@ export default function ClientPage({ config }: { config: Config }) {
       </motion.div>
 
       {/* Invisibile scroll area per permettere l'animazione di scorrimento */}
-      <div className="h-[300vh] w-full pointer-events-none" />
+      <div className="h-[230vh] w-full pointer-events-none" />
     </div>
     </>
   )
