@@ -211,10 +211,10 @@ export default function ClientPage({ config }: { config: Config }) {
 
       {/* === SCROLL INDICATOR === */}
       <motion.div 
-        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-70 z-40 pointer-events-none"
+        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-70 z-40 pointer-events-none w-full px-4 text-center"
         style={{ opacity: infoVisible ? 0 : indicatorOpacity }}
       >
-        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">scorri per entrare nel mio universo</span>
+        <span className="text-xs uppercase tracking-widest text-white/70 mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)] text-center">scorri per entrare nel mio universo</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
@@ -292,20 +292,20 @@ export default function ClientPage({ config }: { config: Config }) {
                         }
                       `}} />
 
-                      <div className="z-10 flex items-center gap-3 sm:gap-4">
-                        <Icon
-                          className="size-[clamp(20px,2.8dvh,32px)] transition-colors duration-300"
-                          strokeWidth={2.5}
-                          style={{ color: btn.color }}
-                        />
-                        <span
-                          className="text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase [text-shadow:0_0_10px_rgba(255,255,255,0.5)] text-white/90"
-                        >
-                          {btn.label}
-                        </span>
-                      </div>
+                      <Icon
+                        className="absolute left-[clamp(16px,2dvw,24px)] z-10 size-[clamp(20px,2.8dvh,32px)] transition-colors duration-300"
+                        strokeWidth={2.5}
+                        style={{ color: btn.color }}
+                      />
+                      
+                      <span
+                        className="z-10 w-full px-[60px] text-center text-[clamp(11px,1.6dvh,16px)] font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase text-white/90 [text-shadow:0_0_10px_rgba(255,255,255,0.5)] whitespace-normal"
+                      >
+                        {btn.label}
+                      </span>
+
                       {btn.isPrimary && (
-                        <div className="z-10 flex size-[clamp(30px,4dvh,45px)] items-center justify-center rounded-full bg-white/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-[0_0_15px_white]">
+                        <div className="absolute right-[clamp(16px,2dvw,24px)] z-10 flex size-[clamp(30px,4dvh,45px)] items-center justify-center rounded-full bg-white/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-[0_0_15px_white]">
                           <Play className="size-[clamp(14px,2dvh,20px)] fill-black text-black ml-0.5" />
                         </div>
                       )}
